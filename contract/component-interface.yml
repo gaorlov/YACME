@@ -18,7 +18,8 @@ paths:
     post:
       summary: Create a new instance of a component
       description: Create a new instance of a component and get back a creation job_id with which to track progress
-      tags: component
+      tags: 
+        - component
       responses:
         200:
           description: OK
@@ -29,7 +30,8 @@ paths:
     get:
       summary: Status of component during creation
       description: Returns a component manifest
-      tags: component
+      tags: 
+        - component
       responses:
         200:
           description: OK

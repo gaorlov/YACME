@@ -59,7 +59,7 @@ paths:
       summary: Delete app
       description:
       tags:
-        - components
+        - apps
       responses:
         200:
           description: OK

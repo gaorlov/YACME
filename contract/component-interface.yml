@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: YACME (Yet Another Config Management Engine) component contract
+  description: The API contract stub for YACME components. All components will conform to this API shape, but vary in input parameters
+
+consumes:
+  - application/vnd.api+json
+produces:
+  - application/vnd.api+json
+tags:
+  - name: component
+    description: component instance management endpoints
+  - name: docs
+    description: Documentation endpoints
+paths:
+  /component:
+    post:
+      summary: Create a new instance of a component
+      description: Create a new instance of a component and get back a creation job_id with which to track progress
+      tags: component
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad input parameters. Check /info for 
+
+  /component/{job_id}/status:
+    get:
+      summary: Status of component during creation
+      description: Returns a component manifest
+      tags: component
+      responses:
+        200:
+          description: OK
+        404:
+          description: Job not found. Either the id is bad, or it has expired
+
+  /docs:
+    get:
+      summary: API Docs
+      description: Swagger formatted API json.
+      tags:
+        - docs
+      responses:
+        200:
+          description: OK
+
+definitions:
+  errors:
+    properties:
+      errors:
+        type: array
+
+  component:
+    type: object
+    reqired:
+      - configuration_type
+      - class
+      - type
+      - name
+      - params
+    properties:
+      configuration_type:
+        type: string
+        example: kubernetes
+      class:
+        type: string
+        example: service
+      type:
+        type: string
+        example: AWS-based redis
+      name:
+        type: string
+        example: redis
+      params:
+        type: object
+
+      
+parameters:

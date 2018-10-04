@@ -1,0 +1,260 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: YACME (Yet Another Config Management Engine)
+  description: Handles Kubernetes and Concourse configuration for services, so that devs never have to think about those things and get their work done
+
+tags:
+  - name: components
+    description: Component registry
+  - name: apps
+    description: individual app interface
+  - name: docs
+    description: API contract definition
+consumes:
+  - application/vnd.api+json
+produces:
+  - application/vnd.api+json
+paths:
+  /apps:
+    post:
+      summary: New app
+      description: Creates a new app
+      tags:
+        - app
+      responses:
+        201:
+          description: Successfully created app
+        400:
+          description: Bad input
+          schema:
+            $ref: "#/definitions/errors"
+
+  /apps/{app-slug}:
+    get:
+      summary: Individual app
+      description: Show full list of properties for an app. Its pipeline link, components, etc.
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+        404:
+          description: App not found
+          schema:
+            $ref: "#/definitions/errors"
+    put:
+      summary: Update individual app properties
+      description: Update selective app properties for a specific app
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+        404:
+          description: App not found
+          schema:
+            $ref: "#/definitions/errors"
+    delete:
+      summary: Delete app
+      description:
+      tags:
+        - components
+      responses:
+        200:
+          description: OK
+        404:
+          description: component type not found
+          schema:
+            $ref: "#/definitions/errors"
+
+  /apps/{app-slug}/components:
+    get:
+      summary: List of components of app
+      description: 
+      tags:
+        - apps
+    responses:
+      200:
+        description: OK
+      404:
+        description: App not found
+        schema:
+          $ref: "#/definitions/errors"
+    post:
+      summary: New component for app
+      description: 
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad input
+          schema:
+            $ref: "#/definitions/errors"
+        404:
+          description: App not found
+          schema:
+            $ref: "#/definitions/errors"
+
+  /apps/{app-slug}/components/{id}:
+    get:
+      summary: Individual app component
+      description: 
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+        404:
+          description: App or component not found
+          schema:
+            $ref: "#/definitions/errors"
+
+    put:
+      summary: Update app component
+      description: 
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+        404:
+          description: App or component not found
+          schema:
+            $ref: "#/definitions/errors"
+    delete:
+      summary: Delete app component
+      description:
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+        404:
+          description: component type not found
+          schema:
+            $ref: "#/definitions/errors"
+
+  /components:
+    get:
+      summary: List of all known components
+      description: 
+      tags:
+        - components
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new component type
+      description: 
+      tags:
+        - components
+      responses:
+        201:
+          description: New component type created
+        400:
+          description: Bad input
+          schema:
+            $ref: "#/definitions/errors"
+
+  /components/{component-slug}:
+    get:
+      summary: Individual component details
+      description:
+      tags:
+        - components
+      responses:
+        200:
+          description: OK
+        404:
+          description: component type not found
+          schema:
+            $ref: "#/definitions/errors"
+    put:
+      summary: Update component details
+      description:
+      tags:
+        - components
+      responses:
+        200:
+          description: OK
+        404:
+          description: component type not found
+          schema:
+            $ref: "#/definitions/errors"
+    delete:
+      summary: Delete component type
+      description:
+      tags:
+        - components
+      responses:
+        200:
+          description: OK
+        404:
+          description: component type not found
+          schema:
+            $ref: "#/definitions/errors"
+
+  /docs:
+    get:
+      summary: API Docs
+      description: Swagger formatted API json. This document
+      tags:
+        - docs
+      responses:
+        200:
+          description: OK
+
+definitions:
+  errors:
+    type: object
+    required:
+      - errors
+    properties:
+      errors:
+        type: array
+  app:
+    type: object
+    required:
+      - id
+      - name
+      - repo
+      - url_slug
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: YACME API
+      repo:
+        type: string
+        example: https://github.com/gaorlov/YACME
+      url_slug:
+        type: string
+        example: yacme-api-1
+      description:
+        type: string
+        example: Config manager api
+
+  component:
+    type: object
+    properties:
+      configuration_type:
+        type: string
+        example: kubernetes
+      class:
+        type: string
+        example: service
+      type:
+        type: string
+        example: AWS-based redis
+      name:
+        type: string
+        example: redis
+      params:
+        type: object
+
+parameters:

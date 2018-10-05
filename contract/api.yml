@@ -87,8 +87,10 @@ paths:
       tags:
         - apps
       responses:
-        200:
-          description: OK
+        201:
+          description: Created
+        202:
+          description: Accepted. Component still creating.
         400:
           description: Bad input
           schema:
@@ -107,6 +109,8 @@ paths:
       responses:
         200:
           description: OK
+        202:
+          description: Accepted. Component still creating.
         404:
           description: App or component not found
           schema:
@@ -120,6 +124,8 @@ paths:
       responses:
         200:
           description: OK
+        202:
+          description: Accepted. Component still creating.
         404:
           description: App or component not found
           schema:

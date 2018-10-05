@@ -21,13 +21,39 @@ paths:
       tags: 
         - component
       responses:
-        200:
-          description: OK
+        201:
+          description: Created
+        202:
+          description: Accepted. Poll with meta[receipt] until 200 is returned
         400:
           description: Bad input parameters. Check /info for 
 
-  /component/{job_id}/status:
+  /component/{receipt}:
     get:
+      summary: Status of component during creation
+      description: Returns a component manifest
+      tags:
+        - component
+      responses:
+        200:
+          description: OK
+        202:
+          description: Accepted. Poll with meta[receipt] until 200 is returned
+        404:
+          description: Component with receipt isn't found
+    put:
+      summary: Status of component during creation
+      description: Returns a component manifest
+      tags:
+        - component
+      responses:
+        200:
+          description: OK
+        202:
+          description: Accepted. Poll with meta[receipt] until 200 is returned
+        404:
+          description: Component with receipt isn't found
+    delete:
       summary: Status of component during creation
       description: Returns a component manifest
       tags: 
@@ -36,7 +62,7 @@ paths:
         200:
           description: OK
         404:
-          description: Job not found. Either the id is bad, or it has expired
+          description: Component with receipt isn't found
 
   /docs:
     get:

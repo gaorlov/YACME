@@ -1,0 +1,11 @@
+version: '3'
+services:
+  swagger:
+    container_name: swagger-ui
+    image: swaggerapi/swagger-ui:3.18.2
+    ports:
+      - 7768:8080
+    volumes:
+      - .:/contract
+    environment:
+      - SWAGGER_JSON=/contract/component-interface.yml

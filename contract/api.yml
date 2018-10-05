@@ -5,7 +5,7 @@ info:
   description: Handles Kubernetes and Concourse configuration for services, so that devs never have to think about those things and get their work done
 
 tags:
-  - name: components
+  - name: component_types
     description: Component registry
   - name: apps
     description: individual app interface
@@ -28,7 +28,7 @@ paths:
         400:
           description: Bad input
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
   /apps/{app-slug}:
     get:
@@ -42,7 +42,7 @@ paths:
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
     put:
       summary: Update individual app properties
       description: Update selective app properties for a specific app
@@ -54,7 +54,7 @@ paths:
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
     delete:
       summary: Delete app
       description:
@@ -66,7 +66,7 @@ paths:
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
   /apps/{app-slug}/components:
     get:
@@ -80,7 +80,7 @@ paths:
       404:
         description: App not found
         schema:
-          $ref: "#/definitions/errors"
+          $ref: "#/responses/errors"
     post:
       summary: New component for app
       description: 
@@ -94,13 +94,13 @@ paths:
         400:
           description: Bad input
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
-  /apps/{app-slug}/components/{id}:
+  /apps/{app-slug}/components/{component-slug}:
     get:
       summary: Individual app component
       description: 
@@ -114,7 +114,7 @@ paths:
         404:
           description: App or component not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
     put:
       summary: Update app component
@@ -129,7 +129,7 @@ paths:
         404:
           description: App or component not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
     delete:
       summary: Delete app component
       description:
@@ -141,14 +141,14 @@ paths:
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
-  /components:
+  /component-types:
     get:
-      summary: List of all known components
+      summary: List of all known component_types
       description: 
       tags:
-        - components
+        - component_types
       responses:
         200:
           description: OK
@@ -156,52 +156,52 @@ paths:
       summary: Create new component type
       description: 
       tags:
-        - components
+        - component_types
       responses:
         201:
           description: New component type created
         400:
           description: Bad input
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
-  /components/{component-slug}:
+  /component-types/{component-type-slug}:
     get:
       summary: Individual component details
       description:
       tags:
-        - components
+        - component_types
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
     put:
       summary: Update component details
       description:
       tags:
-        - components
+        - component_types
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
     delete:
       summary: Delete component type
       description:
       tags:
-        - components
+        - component_types
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/responses/errors"
 
   /docs:
     get:
@@ -213,21 +213,18 @@ paths:
         200:
           description: OK
 
-definitions:
+responses:
   errors:
     type: object
-    required:
-      - errors
     properties:
       errors:
         type: array
+        items:
+          type: string
+        example:
+          - Component type LOL-NOT-EVEN-REDIS was not found
   app:
     type: object
-    required:
-      - id
-      - name
-      - repo
-      - url_slug
     properties:
       id:
         type: integer
@@ -248,6 +245,18 @@ definitions:
   component:
     type: object
     properties:
+      name:
+        type: string
+        example: stateful-set-redis
+      prams:
+        type: object
+        example:
+          set_size: 5Gi
+          port: 6400
+
+  component_type:
+    type: object
+    properties:
       configuration_type:
         type: string
         example: kubernetes
@@ -260,7 +269,70 @@ definitions:
       name:
         type: string
         example: redis
-      params:
-        type: object
+      description:
+        type: string
+        example: Key-value storage hosted on AWS
 
 parameters:
+  appSlug:
+    name: app-slug
+    in: query
+    type: string
+    example: yacme-api-1
+
+  componentSlug:
+    name: component-slug
+    in: query
+    type: string
+    example: yacme-api-1-aws-redis-12
+
+  componentTypeSlug:
+    name: component-type-slug
+    in: query
+    type: string
+
+
+  app:
+    type: object
+    required:
+      - name
+      - repo
+    properties:
+      name:
+        type: string
+        example: YACME API
+      repo:
+        type: string
+        example: https://github.com/gaorlov/YACME
+      description:
+        type: string
+        example: Config manager api
+
+  component_type:
+    type: object
+    required:
+      - configuration_type
+      - class
+      - type
+      - name
+    properties:
+      configuration_type:
+        type: string
+        example: kubernetes
+      class:
+        type: string
+        example: service
+      type:
+        type: string
+        example: AWS-based redis
+      name:
+        type: string
+        example: redis
+
+  component:
+    type: object
+    required:
+      - params
+    properties:
+      params:
+        type: object

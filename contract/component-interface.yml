@@ -10,60 +10,42 @@ produces:
   - application/vnd.api+json
 tags:
   - name: component
-    description: component instance management endpoints
+    description: Component creation
   - name: docs
     description: Documentation endpoints
 paths:
-  /component:
+  /:
     post:
-      summary: Create a new instance of a component
-      description: Create a new instance of a component and get back a creation job_id with which to track progress
+      summary: Create a set of component actions
+      description: Create a new instance of a component and get back a set of concourse objects for performing actions
       tags: 
         - component
+      parameters:
+        - in: body
+          name: params
+          type: object
+          required: true
+          description: Filled out parameter set as described in /definition
       responses:
         201:
           description: Created
-        202:
-          description: Accepted. Poll with meta[receipt] until 200 is returned
+          responses:
+            schema:
+              $ref: "#/definitions/component_actions"
         400:
-          description: Bad input parameters. Check /info for 
+          description: Bad input parameters. Check /definition for available params
 
-  /component/{receipt}:
+
+  /definition:
     get:
-      summary: Status of component during creation
-      description: Returns a component manifest
+      summary: Object data structure definition
       tags:
-        - component
+        - docs
       responses:
         200:
           description: OK
-        202:
-          description: Accepted. Poll with meta[receipt] until 200 is returned
-        404:
-          description: Component with receipt isn't found
-    put:
-      summary: Status of component during creation
-      description: Returns a component manifest
-      tags:
-        - component
-      responses:
-        200:
-          description: OK
-        202:
-          description: Accepted. Poll with meta[receipt] until 200 is returned
-        404:
-          description: Component with receipt isn't found
-    delete:
-      summary: Status of component during creation
-      description: Returns a component manifest
-      tags: 
-        - component
-      responses:
-        200:
-          description: OK
-        404:
-          description: Component with receipt isn't found
-
+          schema:
+            $ref: "#/definitions/component_definition"
   /docs:
     get:
       summary: API Docs
@@ -80,29 +62,42 @@ definitions:
       errors:
         type: array
 
-  component:
+  component_definition:
     type: object
-    reqired:
-      - configuration_type
-      - class
-      - type
-      - name
-      - params
     properties:
-      configuration_type:
-        type: string
-        example: kubernetes
       class:
         type: string
-        example: service
+        enum:
+          - object
+          - action
+        example: object
       type:
         type: string
-        example: AWS-based redis
+        example: RDS-PG
       name:
         type: string
-        example: redis
+        example: RDS-backed postgres
       params:
         type: object
+        example:
+          PD_USERNAME: string
+          PG_PASSWORD: string
+          PG_HOST: string
+          PG_PORT: integer
 
-      
-parameters:
+  component_actions:
+    type: array
+    items:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+            - create
+            - check
+            - update
+            - destroy
+        resource:
+          type: object
+        job:
+          type: object

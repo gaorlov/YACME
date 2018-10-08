@@ -8,4 +8,4 @@ services:
     volumes:
       - .:/contract
     environment:
-      - SWAGGER_JSON=/contract/component-interface.yml
+      - SWAGGER_JSON=/contract/api.yml

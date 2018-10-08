@@ -223,55 +223,83 @@ responses:
           type: string
         example:
           - Component type LOL-NOT-EVEN-REDIS was not found
+        description: List of errors
   app:
     type: object
     properties:
       id:
         type: integer
         example: 1
+        description: Unique ID for an app
       name:
         type: string
         example: YACME API
+        description: Descriptive name for an app
       repo:
         type: string
         example: https://github.com/gaorlov/YACME
+        description: Link to github repo
       url_slug:
         type: string
         example: yacme-api-1
+        description: URL slug that is a combination of the name and ID
       description:
         type: string
         example: Config manager api
+        description: |
+          [OPTIONAL] description of the application
+    description: |
+      Full specification for an app pipeline. 
+
+      [NOTE] Relationships block specifies the order of components that will form the pipeline.
 
   component:
     type: object
     properties:
+      class:
+        type: string
+        enum:
+          - object
+          - action
+        description: component class. Description in component_type.class field
       name:
         type: string
-        example: stateful-set-redis
-      prams:
+        example: rds-postgres
+        description: name of the component
+      params:
         type: object
         example:
-          set_size: 5Gi
-          port: 6400
+          PD_USERNAME: root
+          PG_PASSWORD: root-pass
+          PG_HOST: postgres.internal.example.com
+          PG_PORT: 5432
+        description: Component-specific params
+    description: |
+      App-specific component instance definition. 
 
   component_type:
     type: object
     properties:
-      configuration_type:
-        type: string
-        example: kubernetes
       class:
         type: string
-        example: service
-      type:
-        type: string
-        example: AWS-based redis
+        enum:
+          - object
+          - action
+        description: |
+          * `object` - object components are centered around a resource definition that needs to be managed and should include `create`, `check`, `update`, and `delete` actions.
+          * `action` - an action component is just that: a concourse step/job that gets executed (`execute` action)
       name:
         type: string
-        example: redis
+        example: RDS-based postgres
+        description: Discriptive, unique name of the component
+      params:
+        type: 
       description:
         type: string
         example: Key-value storage hosted on AWS
+        description: Description of the component
+    description: |
+      Component Type definition.
 
 parameters:
   appSlug:
@@ -279,18 +307,20 @@ parameters:
     in: query
     type: string
     example: yacme-api-1
+    description: Url slug for an app
 
   componentSlug:
     name: component-slug
     in: query
     type: string
     example: yacme-api-1-aws-redis-12
+    description: Url slug for an app component
 
   componentTypeSlug:
     name: component-type-slug
     in: query
     type: string
-
+    description: Url slug for an component type
 
   app:
     type: object
@@ -301,33 +331,26 @@ parameters:
       name:
         type: string
         example: YACME API
+        description: App name
       repo:
         type: string
         example: https://github.com/gaorlov/YACME
+        description: Github repo URL
       description:
         type: string
         example: Config manager api
+        description: |
+          [OPTIONAL] Description of app
 
   component_type:
     type: object
     required:
-      - configuration_type
-      - class
-      - type
-      - name
+      - url
     properties:
-      configuration_type:
+      url:
         type: string
-        example: kubernetes
-      class:
-        type: string
-        example: service
-      type:
-        type: string
-        example: AWS-based redis
-      name:
-        type: string
-        example: redis
+        example: http://rds-postgres-component.internal.example.com
+        description: url to component_type service to be used to register a component service
 
   component:
     type: object
@@ -336,3 +359,4 @@ parameters:
     properties:
       params:
         type: object
+        description: Param set for app-specific component definition

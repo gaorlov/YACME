@@ -26,12 +26,16 @@ paths:
           type: object
           required: true
           description: Filled out parameter set as described in /definition
+          example:
+            PD_USERNAME: root
+            PG_PASSWORD: root-pass
+            PG_HOST: postgres.internal.example.com
+            PG_PORT: 5432
       responses:
         201:
           description: Created
-          responses:
-            schema:
-              $ref: "#/definitions/component_actions"
+          schema:
+            $ref: "#/definitions/component_actions"
         400:
           description: Bad input parameters. Check /definition for available params
 
@@ -61,6 +65,9 @@ definitions:
     properties:
       errors:
         type: array
+        items:
+          type: string
+      description: List of errors
 
   component_definition:
     type: object
@@ -71,12 +78,14 @@ definitions:
           - object
           - action
         example: object
-      type:
-        type: string
-        example: RDS-PG
+        description: |
+          * `object` - object components are centered around a resource definition that needs to be managed and should include `create`, `check`, `update`, and `delete` actions.
+          * `action` - an action component is just that: a concourse step/job that gets executed (`execute` action)
       name:
         type: string
         example: RDS-backed postgres
+        description: |
+          Unique name for the component. 
       params:
         type: object
         example:
@@ -84,6 +93,11 @@ definitions:
           PG_PASSWORD: string
           PG_HOST: string
           PG_PORT: integer
+        description: |
+          Param set needed to define and interact with the component
+      description:
+        type: string
+        description: The description of the component
 
   component_actions:
     type: array
@@ -97,7 +111,29 @@ definitions:
             - check
             - update
             - destroy
-        resource:
-          type: object
-        job:
-          type: object
+            - execute
+          description: |
+            Object actions: lifecycle management concnourse actions for an object
+
+            * `create` - concnourse step to create the object
+            * `check`  - concnourse step to check on object status
+            * `update` - concnourse step to update object
+            * `destroy`- concnourse step to destroy the resource
+
+            Action actions: 
+            * `execute` - definition of the concourse action
+        resource_types:
+          type: array
+          items:
+            type: object
+          description: Concourse resource types associated with the component action
+        resources:
+          type: array
+          items:
+            type: object
+          description: Concourse resources associated with the component action
+        jobs:
+          type: array
+          items:
+            type: object
+          description: Concourse jobs associated with the component action

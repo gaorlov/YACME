@@ -5,10 +5,10 @@ info:
   description: Handles Kubernetes and Concourse configuration for services, so that devs never have to think about those things and get their work done
 
 tags:
-  - name: component_types
-    description: Component registry
   - name: apps
     description: individual app interface
+  - name: component_types
+    description: Component registry
   - name: docs
     description: API contract definition
 consumes:
@@ -17,18 +17,34 @@ produces:
   - application/vnd.api+json
 paths:
   /apps:
+    get:
+      summary: List of all apps
+      definitions: Full list of all apps registered in the system
+      tags:
+        - apps
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/app"
     post:
       summary: New app
       description: Creates a new app
       tags:
-        - app
+        - apps
+      parameters:
+        - $ref: "#/parameters/app"
       responses:
         201:
           description: Successfully created app
+          schema:
+            $ref: "#/definitions/app"
         400:
           description: Bad input
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
 
   /apps/{app-slug}:
     get:
@@ -36,37 +52,48 @@ paths:
       description: Show full list of properties for an app. Its pipeline link, components, etc.
       tags:
         - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
       responses:
         200:
           description: OK
+          schema:
+            $ref: "#/definitions/app"
         404:
           description: App not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
     put:
       summary: Update individual app properties
       description: Update selective app properties for a specific app
       tags:
         - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/app"
       responses:
         200:
           description: OK
+          schema:
+            $ref: "#/definitions/app"
         404:
           description: App not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
     delete:
       summary: Delete app
       description:
       tags:
         - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
 
   /apps/{app-slug}/components:
     get:
@@ -74,31 +101,40 @@ paths:
       description: 
       tags:
         - apps
-    responses:
-      200:
-        description: OK
-      404:
-        description: App not found
-        schema:
-          $ref: "#/responses/errors"
-    post:
-      summary: New component for app
-      description: 
-      tags:
-        - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
       responses:
-        201:
-          description: Created
-        202:
-          description: Accepted. Component still creating.
-        400:
-          description: Bad input
+        200:
+          description: OK
           schema:
-            $ref: "#/responses/errors"
+            type: array
+            items:
+              $ref: "#/definitions/component"
         404:
           description: App not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
+    post:
+      summary: New component for app
+      description: Create a new component for an app
+      tags:
+        - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/component"
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/component"
+        400:
+          description: Bad input
+          schema:
+            $ref: "#/definitions/errors"
+        404:
+          description: App not found
+          schema:
+            $ref: "#/definitions/errors"
 
   /apps/{app-slug}/components/{component-slug}:
     get:
@@ -106,42 +142,52 @@ paths:
       description: 
       tags:
         - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/compoenentSlug"
       responses:
         200:
           description: OK
-        202:
-          description: Accepted. Component still creating.
+          schema:
+            $ref: "#/definitions/component"
         404:
           description: App or component not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
 
     put:
       summary: Update app component
       description: 
       tags:
         - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/componentSlug"
+        - $ref: "#/parameters/component"
       responses:
         200:
           description: OK
-        202:
-          description: Accepted. Component still creating.
+          schema:
+            $ref: "#/definitions/component"
         404:
           description: App or component not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
     delete:
       summary: Delete app component
       description:
       tags:
         - apps
+      parameters:
+        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/componentSlug"
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
 
   /component-types:
     get:
@@ -152,18 +198,27 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            type: array
+            items:
+              schema:
+                $ref: "#/definitions/componentType"
     post:
       summary: Create new component type
       description: 
       tags:
         - component_types
+      parameters:
+        - $ref: "#/parameters/componentType"
       responses:
         201:
           description: New component type created
+          schema:
+            $ref: "#/definitions/componentType"
         400:
           description: Bad input
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
 
   /component-types/{component-type-slug}:
     get:
@@ -171,37 +226,48 @@ paths:
       description:
       tags:
         - component_types
+      parameters:
+        - $ref: "#/parameters/componentTypeSlug"
       responses:
         200:
           description: OK
+          schema:
+            $ref: "#/definitions/componentType"
         404:
           description: component type not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
     put:
       summary: Update component details
       description:
       tags:
         - component_types
+      parameters:
+        - $ref: "#/parameters/componentTypeSlug"
+        - $ref: "#/parameters/componentType"
       responses:
         200:
           description: OK
+          schema:
+            $ref: "#/definitions/componentType"
         404:
           description: component type not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
     delete:
       summary: Delete component type
       description:
       tags:
         - component_types
+      parameters:
+        - $ref: "#/parameters/componentTypeSlug"
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/responses/errors"
+            $ref: "#/definitions/errors"
 
   /docs:
     get:
@@ -213,7 +279,7 @@ paths:
         200:
           description: OK
 
-responses:
+definitions:
   errors:
     type: object
     properties:
@@ -274,10 +340,31 @@ responses:
           PG_HOST: postgres.internal.example.com
           PG_PORT: 5432
         description: Component-specific params
+      dependencies:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: name of component
+            action:
+              type: string
+              enum:
+                - create
+                - check
+                - update
+                - delete
+                - execute
+              description: component action
+          example:
+            - unit-tests: execute
+              kafka: create
+        description: array of component actions that need to pass before the current action will run.
     description: |
       App-specific component instance definition. 
 
-  component_type:
+  componentType:
     type: object
     properties:
       class:
@@ -323,6 +410,8 @@ parameters:
     description: Url slug for an component type
 
   app:
+    name: app
+    in: body
     type: object
     required:
       - name
@@ -342,7 +431,9 @@ parameters:
         description: |
           [OPTIONAL] Description of app
 
-  component_type:
+  componentType:
+    name: component-type
+    in: body
     type: object
     required:
       - url
@@ -353,10 +444,38 @@ parameters:
         description: url to component_type service to be used to register a component service
 
   component:
+    name: component
+    in: body
     type: object
     required:
       - params
     properties:
       params:
         type: object
+        example:
+          PD_USERNAME: root
+          PG_PASSWORD: root-pass
+          PG_HOST: postgres.internal.example.com
+          PG_PORT: 5432
         description: Param set for app-specific component definition
+      dependencies:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: name of component
+            action:
+              type: string
+              enum:
+                - create
+                - check
+                - update
+                - delete
+                - execute
+              description: component action
+        example:
+          - unit-tests: execute
+            kafka: create
+        description: array of component actions that need to pass before the current action will run.

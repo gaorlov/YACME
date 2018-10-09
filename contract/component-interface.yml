@@ -110,7 +110,7 @@ definitions:
             - create
             - check
             - update
-            - destroy
+            - delete
             - execute
           description: |
             Object actions: lifecycle management concnourse actions for an object
@@ -118,7 +118,7 @@ definitions:
             * `create` - concnourse step to create the object
             * `check`  - concnourse step to check on object status
             * `update` - concnourse step to update object
-            * `destroy`- concnourse step to destroy the resource
+            * `delete`- concnourse step to delete the resource
 
             Action actions: 
             * `execute` - definition of the concourse action

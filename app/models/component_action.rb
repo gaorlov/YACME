@@ -1,0 +1,2 @@
+class ComponentAction < ApplicationRecord
+end

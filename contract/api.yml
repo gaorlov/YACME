@@ -46,14 +46,14 @@ paths:
           schema:
             $ref: "#/definitions/errors"
 
-  /apps/{app-slug}:
+  /apps/{app-id}:
     get:
       summary: Individual app
       description: Show full list of properties for an app. Its pipeline link, components, etc.
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/appId"
       responses:
         200:
           description: OK
@@ -69,7 +69,7 @@ paths:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/appId"
         - $ref: "#/parameters/app"
       responses:
         200:
@@ -86,7 +86,7 @@ paths:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/appId"
       responses:
         200:
           description: OK
@@ -95,14 +95,14 @@ paths:
           schema:
             $ref: "#/definitions/errors"
 
-  /apps/{app-slug}/components:
+  /apps/{app-id}/components:
     get:
       summary: List of components of app
       description: 
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/appId"
       responses:
         200:
           description: OK
@@ -120,7 +120,7 @@ paths:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/appId"
         - $ref: "#/parameters/component"
       responses:
         201:
@@ -136,14 +136,14 @@ paths:
           schema:
             $ref: "#/definitions/errors"
 
-  /apps/{app-slug}/components/{component-slug}:
+  /apps/{app-id}/components/{component-id}:
     get:
       summary: Individual app component
       description: 
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
+        - $ref: "#/parameters/appId"
         - $ref: "#/parameters/compoenentSlug"
       responses:
         200:
@@ -161,8 +161,8 @@ paths:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
-        - $ref: "#/parameters/componentSlug"
+        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/componentId"
         - $ref: "#/parameters/component"
       responses:
         200:
@@ -179,8 +179,8 @@ paths:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appSlug"
-        - $ref: "#/parameters/componentSlug"
+        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/componentId"
       responses:
         200:
           description: OK
@@ -220,14 +220,14 @@ paths:
           schema:
             $ref: "#/definitions/errors"
 
-  /component-types/{component-type-slug}:
+  /component-types/{component-type-id}:
     get:
       summary: Individual component details
       description:
       tags:
         - component_types
       parameters:
-        - $ref: "#/parameters/componentTypeSlug"
+        - $ref: "#/parameters/componentTypeId"
       responses:
         200:
           description: OK
@@ -243,7 +243,7 @@ paths:
       tags:
         - component_types
       parameters:
-        - $ref: "#/parameters/componentTypeSlug"
+        - $ref: "#/parameters/componentTypeId"
         - $ref: "#/parameters/componentType"
       responses:
         200:
@@ -260,7 +260,7 @@ paths:
       tags:
         - component_types
       parameters:
-        - $ref: "#/parameters/componentTypeSlug"
+        - $ref: "#/parameters/componentTypeId"
       responses:
         200:
           description: OK
@@ -305,10 +305,6 @@ definitions:
         type: string
         example: https://github.com/gaorlov/YACME
         description: Link to github repo
-      url_slug:
-        type: string
-        example: yacme-api-1
-        description: URL slug that is a combination of the name and ID
       description:
         type: string
         example: Config manager api
@@ -322,7 +318,11 @@ definitions:
   component:
     type: object
     properties:
-      class:
+      id:
+        type: integer
+        example: 12
+        description: Unique ID for an app component
+      type:
         type: string
         enum:
           - object
@@ -367,7 +367,11 @@ definitions:
   componentType:
     type: object
     properties:
-      class:
+      id:
+        type: integer
+        example: 8
+        description: Unique ID for a component type
+      type:
         type: string
         enum:
           - object
@@ -379,8 +383,18 @@ definitions:
         type: string
         example: RDS-based postgres
         description: Discriptive, unique name of the component
+      url:
+        type: string
+        example: http://rds-postgres-component.internal.example.com
+        description: url to component_type service to be used to register a component service
       params:
-        type: 
+        type: object
+        description: Param set for creating/updating a new compoenent of this type
+        example:
+          PD_USERNAME: root
+          PG_PASSWORD: root-pass
+          PG_HOST: postgres.internal.example.com
+          PG_PORT: 5432
       description:
         type: string
         example: Key-value storage hosted on AWS
@@ -389,24 +403,25 @@ definitions:
       Component Type definition.
 
 parameters:
-  appSlug:
-    name: app-slug
+  appId:
+    name: app-id
     in: query
-    type: string
-    example: yacme-api-1
+    type: integer
+    example: 1
     description: Url slug for an app
 
-  componentSlug:
-    name: component-slug
+  componentId:
+    name: component-id
     in: query
-    type: string
-    example: yacme-api-1-aws-redis-12
+    type: integer
+    example: 12
     description: Url slug for an app component
 
-  componentTypeSlug:
-    name: component-type-slug
+  componentTypeId:
+    name: component-type-id
     in: query
-    type: string
+    type: integer
+    example: 8
     description: Url slug for an component type
 
   app:

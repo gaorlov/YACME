@@ -1,7 +1,7 @@
-# README
+# YACME (Yet Another Config Management Engine)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Essentially, this is a very small-scale open source version of Heroku.
+
 
 Things you may want to cover:
 

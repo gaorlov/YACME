@@ -1,0 +1,2 @@
+class AppComponentParam < ApplicationRecord
+end

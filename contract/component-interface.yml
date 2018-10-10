@@ -58,7 +58,7 @@ paths:
         201:
           description: Created
           schema:
-            $ref: "#/definitions/component_actions"
+            $ref: "#/definitions/component-actions"
         400:
           description: Bad input parameters. Check /definition for available params
           schema:
@@ -74,7 +74,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/component_definition"
+            $ref: "#/definitions/component-definition"
   /docs:
     get:
       summary: API Docs
@@ -94,7 +94,7 @@ definitions:
           type: string
     description: List of errors
 
-  component_definition:
+  component-definition:
     type: object
     properties:
       class:
@@ -124,7 +124,7 @@ definitions:
         type: string
         description: The description of the component
 
-  component_actions:
+  component-actions:
     type: array
     items:
       type: object

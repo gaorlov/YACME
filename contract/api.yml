@@ -347,8 +347,10 @@ definitions:
                 - execute
               description: component action
           example:
-            - unit-tests: execute
-              kafka: create
+            - name: unit-tests
+              action: execute
+            - name: kafka
+              action: create
         description: array of component actions that need to pass before the current action will run.
     description: |
       App-specific component instance definition. 

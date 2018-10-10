@@ -26,11 +26,34 @@ paths:
           schema:
             type: object
             description: Filled out parameter set as described in /definition
+            properties:
+              dependencies:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: name of component
+                    action:
+                      type: string
+                      enum:
+                        - create
+                        - check
+                        - update
+                        - delete
+                        - execute
+                      description: component action
             example:
               PD_USERNAME: root
               PG_PASSWORD: root-pass
               PG_HOST: postgres.internal.example.com
               PG_PORT: 5432
+              dependencies:
+                - name: unit-tests
+                  action: execute
+                - name: kafka
+                  action: create
       responses:
         201:
           description: Created

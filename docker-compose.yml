@@ -1,0 +1,36 @@
+version: '3'
+services:
+  app:
+    container_name: app
+    # image: gaorlov/yacme
+    build:
+      context: .
+    command: bundle exec rails s
+    environment:
+      RAILS_ENV: development
+    volumes:
+    ports:
+      - "3002:3000"
+    links:
+      - postgres
+    networks:
+      - appnet
+      - ".:/usr/src/app"
+
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=yacme
+      - POSTGRES_PASSWORD=bsjsn4i2nsa
+      - POSTGRES_DB=yacme_development
+    networks:
+      - appnet
+    volumes:
+      - ./tmp/postgres-data:/var/lib/postgresql/data
+
+networks:
+  appnet:
+    driver: bridge

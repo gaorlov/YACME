@@ -23,14 +23,14 @@ paths:
       parameters:
         - in: body
           name: params
-          type: object
-          required: true
-          description: Filled out parameter set as described in /definition
-          example:
-            PD_USERNAME: root
-            PG_PASSWORD: root-pass
-            PG_HOST: postgres.internal.example.com
-            PG_PORT: 5432
+          schema:
+            type: object
+            description: Filled out parameter set as described in /definition
+            example:
+              PD_USERNAME: root
+              PG_PASSWORD: root-pass
+              PG_HOST: postgres.internal.example.com
+              PG_PORT: 5432
       responses:
         201:
           description: Created
@@ -38,6 +38,8 @@ paths:
             $ref: "#/definitions/component_actions"
         400:
           description: Bad input parameters. Check /definition for available params
+          schema:
+            $ref: "#/definitions/errors"
 
 
   /definition:
@@ -67,7 +69,7 @@ definitions:
         type: array
         items:
           type: string
-      description: List of errors
+    description: List of errors
 
   component_definition:
     type: object

@@ -4,7 +4,7 @@ class CreateComponentParams < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :description
       t.string :type
-      t.referente :component
+      t.reference :component
 
       t.timestamps
     end

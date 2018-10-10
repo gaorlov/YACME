@@ -7,7 +7,7 @@ info:
 tags:
   - name: apps
     description: individual app interface
-  - name: component_types
+  - name: component-types
     description: Component registry
   - name: docs
     description: API contract definition
@@ -19,7 +19,7 @@ paths:
   /apps:
     get:
       summary: List of all apps
-      definitions: Full list of all apps registered in the system
+      description: Full list of all apps registered in the system
       tags:
         - apps
       responses:
@@ -28,7 +28,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/app"
+              $ref: "#/definitions/app-response"
     post:
       summary: New app
       description: Creates a new app
@@ -40,11 +40,11 @@ paths:
         201:
           description: Successfully created app
           schema:
-            $ref: "#/definitions/app"
+            $ref: "#/definitions/app-response"
         400:
           description: Bad input
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
   /apps/{app-id}:
     get:
@@ -53,221 +53,210 @@ paths:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/app-id"
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/app"
+            $ref: "#/definitions/app-response"
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
     put:
       summary: Update individual app properties
       description: Update selective app properties for a specific app
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/app-id"
         - $ref: "#/parameters/app"
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/app"
+            $ref: "#/definitions/app-response"
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
     delete:
       summary: Delete app
-      description:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/app-id"
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
   /apps/{app-id}/components:
     get:
       summary: List of components of app
-      description: 
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/app-id"
       responses:
         200:
           description: OK
           schema:
             type: array
             items:
-              $ref: "#/definitions/component"
+              $ref: "#/definitions/component-response"
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
     post:
       summary: New component for app
       description: Create a new component for an app
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
+        - $ref: "#/parameters/app-id"
         - $ref: "#/parameters/component"
       responses:
         201:
           description: Created
           schema:
-            $ref: "#/definitions/component"
+            $ref: "#/definitions/component-response"
         400:
           description: Bad input
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
         404:
           description: App not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
   /apps/{app-id}/components/{component-id}:
     get:
       summary: Individual app component
-      description: 
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
-        - $ref: "#/parameters/compoenentSlug"
+        - $ref: "#/parameters/app-id"
+        - $ref: "#/parameters/component-id"
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/component"
+            $ref: "#/definitions/component-response"
         404:
           description: App or component not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
     put:
       summary: Update app component
-      description: 
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
-        - $ref: "#/parameters/componentId"
+        - $ref: "#/parameters/app-id"
+        - $ref: "#/parameters/component-id"
         - $ref: "#/parameters/component"
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/component"
+            $ref: "#/definitions/component-response"
         404:
           description: App or component not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
     delete:
       summary: Delete app component
-      description:
       tags:
         - apps
       parameters:
-        - $ref: "#/parameters/appId"
-        - $ref: "#/parameters/componentId"
+        - $ref: "#/parameters/app-id"
+        - $ref: "#/parameters/component-id"
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
   /component-types:
     get:
-      summary: List of all known component_types
-      description: 
+      summary: List of all known component-types
       tags:
-        - component_types
+        - component-types
       responses:
         200:
           description: OK
           schema:
             type: array
             items:
-              schema:
-                $ref: "#/definitions/componentType"
+              $ref: "#/definitions/component-type-response"
     post:
       summary: Create new component type
-      description: 
       tags:
-        - component_types
+        - component-types
       parameters:
-        - $ref: "#/parameters/componentType"
+        - $ref: "#/parameters/component-type"
       responses:
         201:
           description: New component type created
           schema:
-            $ref: "#/definitions/componentType"
+            $ref: "#/definitions/component-type-response"
         400:
           description: Bad input
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
   /component-types/{component-type-id}:
     get:
       summary: Individual component details
-      description:
       tags:
-        - component_types
+        - component-types
       parameters:
-        - $ref: "#/parameters/componentTypeId"
+        - $ref: "#/parameters/component-type-id"
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/componentType"
+            $ref: "#/definitions/component-type-response"
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
     put:
       summary: Update component details
-      description:
       tags:
-        - component_types
+        - component-types
       parameters:
-        - $ref: "#/parameters/componentTypeId"
-        - $ref: "#/parameters/componentType"
+        - $ref: "#/parameters/component-type-id"
+        - $ref: "#/parameters/component-type"
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/componentType"
+            $ref: "#/definitions/component-type-response"
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
     delete:
       summary: Delete component type
-      description:
       tags:
-        - component_types
+        - component-types
       parameters:
-        - $ref: "#/parameters/componentTypeId"
+        - $ref: "#/parameters/component-type-id"
       responses:
         200:
           description: OK
         404:
           description: component type not found
           schema:
-            $ref: "#/definitions/errors"
+            $ref: "#/definitions/errors-response"
 
   /docs:
     get:
@@ -280,7 +269,7 @@ paths:
           description: OK
 
 definitions:
-  errors:
+  errors-response:
     type: object
     properties:
       errors:
@@ -290,7 +279,7 @@ definitions:
         example:
           - Component type LOL-NOT-EVEN-REDIS was not found
         description: List of errors
-  app:
+  app-response:
     type: object
     properties:
       id:
@@ -315,7 +304,7 @@ definitions:
 
       [NOTE] Relationships block specifies the order of components that will form the pipeline.
 
-  component:
+  component-response:
     type: object
     properties:
       id:
@@ -364,7 +353,7 @@ definitions:
     description: |
       App-specific component instance definition. 
 
-  componentType:
+  component-type-response:
     type: object
     properties:
       id:
@@ -403,94 +392,97 @@ definitions:
       Component Type definition.
 
 parameters:
-  appId:
+  app-id:
     name: app-id
-    in: query
-    type: integer
-    example: 1
-    description: Url slug for an app
+    in: path
+    type: string
+    required: true
+    description: ID of an app
 
-  componentId:
+  component-id:
     name: component-id
-    in: query
-    type: integer
-    example: 12
-    description: Url slug for an app component
+    in: path
+    type: string
+    required: true
+    description: ID of an app component
 
-  componentTypeId:
+  component-type-id:
     name: component-type-id
-    in: query
-    type: integer
-    example: 8
-    description: Url slug for an component type
+    in: path
+    type: string
+    required: true
+    description: ID of an component type
 
   app:
     name: app
     in: body
-    type: object
-    required:
-      - name
-      - repo
-    properties:
-      name:
-        type: string
-        example: YACME API
-        description: App name
-      repo:
-        type: string
-        example: https://github.com/gaorlov/YACME
-        description: Github repo URL
-      description:
-        type: string
-        example: Config manager api
-        description: |
-          [OPTIONAL] Description of app
+    schema:
+      type: object
+      required:
+        - name
+        - repo
+      properties:
+        name:
+          type: string
+          example: YACME API
+          description: App name
+        repo:
+          type: string
+          example: https://github.com/gaorlov/YACME
+          description: Github repo URL
+        description:
+          type: string
+          example: Config manager api
+          description: |
+            [OPTIONAL] Description of app
 
-  componentType:
+  component-type:
     name: component-type
     in: body
-    type: object
-    required:
-      - url
-    properties:
-      url:
-        type: string
-        example: http://rds-postgres-component.internal.example.com
-        description: url to component_type service to be used to register a component service
+    schema:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          example: http://rds-postgres-component.internal.example.com
+          description: url to component_type service to be used to register a component service
 
   component:
     name: component
     in: body
-    type: object
-    required:
-      - params
-    properties:
-      params:
-        type: object
-        example:
-          PD_USERNAME: root
-          PG_PASSWORD: root-pass
-          PG_HOST: postgres.internal.example.com
-          PG_PORT: 5432
-        description: Param set for app-specific component definition
-      dependencies:
-        type: array
-        items:
+    schema:
+      type: object
+      required:
+        - params
+      properties:
+        params:
           type: object
-          properties:
-            name:
-              type: string
-              description: name of component
-            action:
-              type: string
-              enum:
-                - create
-                - check
-                - update
-                - delete
-                - execute
-              description: component action
-        example:
-          - unit-tests: execute
-            kafka: create
-        description: array of component actions that need to pass before the current action will run.
+          example:
+            PD_USERNAME: root
+            PG_PASSWORD: root-pass
+            PG_HOST: postgres.internal.example.com
+            PG_PORT: 5432
+          description: Param set for app-specific component definition
+        dependencies:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: name of component
+              action:
+                type: string
+                enum:
+                  - create
+                  - check
+                  - update
+                  - delete
+                  - execute
+                description: component action
+          example:
+            - unit-tests: execute
+              kafka: create
+          description: array of component actions that need to pass before the current action will run.

@@ -8,15 +8,14 @@ services:
     command: bundle exec rails s
     environment:
       RAILS_ENV: development
-    volumes:
     ports:
       - "3002:3000"
     links:
       - postgres
     networks:
       - appnet
+    volumes:
       - ".:/usr/src/app"
-
 
   postgres:
     image: postgres
@@ -24,12 +23,12 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_USER=yacme
-      - POSTGRES_PASSWORD=bsjsn4i2nsa
+      - POSTGRES_PASSWORD=yacme
       - POSTGRES_DB=yacme_development
     networks:
       - appnet
     volumes:
-      - ./tmp/postgres-data:/var/lib/postgresql/data
+      - "./tmp/postgres-data:/var/lib/postgresql/data"
 
 networks:
   appnet:

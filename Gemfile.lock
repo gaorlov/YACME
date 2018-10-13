@@ -53,6 +53,7 @@ GEM
     bindex (0.5.0)
     builder (3.2.3)
     byebug (10.0.2)
+    concourserb (0.0.16)
     concurrent-ruby (1.0.5)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -165,6 +166,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  concourserb (= 0.0.16)
   dotenv-rails
   jsonapi-utils!
   kaminari

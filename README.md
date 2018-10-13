@@ -40,7 +40,7 @@ The platform api is the layer that keeps track of:
 
 Along with holding the data, the platform is responsible for generating the CI pipeline from the `component` definitions and the `component type` CI templates. Once it generates the pipeline it will push it to the CI platform
 
-**API Definition**: [Swagger docs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/api.yml)
+**API Definition**: [Swagger docs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/v1/api.yml)
 
 #### Component Services
 
@@ -52,7 +52,7 @@ This is weird to conceptualize in the abstract, so if we were to use `postgres` 
 * `update` it, should such a need arise
 * and `delete` it on stack teardown. 
 
-**API Definition**: [Swagger docs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/component-interface.yml)
+**API Definition**: [Swagger docs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/v1/component-interface.yml)
 
 ### Workflow
 
@@ -94,3 +94,7 @@ From there the CI handles all the heavy lifting of running the actual steps as t
 ### Dependencies
 
 YACME only has one hard dependency at the moment: Concourse. It is the CI pipeline interface to which all component services have to adhere. This may change in the future to be more generic to support others.
+
+### Roadmap
+
+This is a pretty ambitious project, but there's not a ton of developers on it, so here's the current roadmap: [link](https://github.com/gaorlov/YACME/blob/master/ROADMAP.md)

@@ -1,0 +1,35 @@
+resource_types:
+
+resources:
+  # ----- DO NOT REMOVE ----- #
+  - name: source
+    type: git
+    source:
+      uri: 
+      branch: 
+      private_key: 
+
+  - name: yacme
+    type: yacme
+
+  # ----- DO NOT REMOVE ----- #
+
+groups:
+  # ----- DO NOT REMOVE ----- #
+  - name: Master
+    jobs:
+      - Update Pipeline
+  # ----- DO NOT REMOVE ----- #
+
+
+jobs:
+  # ----- DO NOT REMOVE ----- #
+  - name: Update Pipeline
+    build_logs_to_retain: 100
+    plan:
+      - get: source
+        trigger: true
+      - put: yacme
+        params:
+          app_name:
+  # ----- DO NOT REMOVE ----- #

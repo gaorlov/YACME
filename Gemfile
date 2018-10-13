@@ -10,6 +10,8 @@ gem 'jsonapi-utils', git: 'https://github.com/gaorlov/jsonapi-utils', branch: 'n
 # env var helpers
 gem 'dotenv-rails'
 
+gem 'concourserb', '0.0.16'
+
 # -- ElasticSearch --
 gem 'kaminari'
 

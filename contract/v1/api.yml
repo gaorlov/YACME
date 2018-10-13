@@ -4,6 +4,8 @@ info:
   title: YACME (Yet Another Config Management Engine)
   description: Handles Kubernetes and Concourse configuration for services, so that devs never have to think about those things and get their work done
 
+basePath: /api/v1/
+
 tags:
   - name: apps
     description: individual app interface
@@ -90,10 +92,26 @@ paths:
         200:
           description: OK
         404:
-          description: component type not found
+          description: App type not found
           schema:
             $ref: "#/definitions/errors-response"
-
+  /apps/{app-id}/rebuild:
+    post:
+      summary: Rebuild pipeline
+      description: Rebuilds an app's pipeline and triggers it to run. Returns the pipeline definition.
+      tags:
+        - apps
+      parameters:
+        - $ref: "#/parameters/app-id"
+      responses:
+        201:
+          description: Pipeline Created and Updated
+          schema:
+            $ref: "#/definitions/pipeline-response"
+        404:
+          description: app type not found
+          schema:
+            $ref: "#/definitions/errors-response"
   /apps/{app-id}/components:
     get:
       summary: List of components of app
@@ -279,6 +297,29 @@ definitions:
         example:
           - Component type LOL-NOT-EVEN-REDIS was not found
         description: List of errors
+
+  pipeline-response:
+    type: object
+    properties:
+      groups:
+        type: array
+        items:
+          type: object
+      resources:
+        type: array
+        items:
+          type: object
+      resource_types:
+        type: array
+        items:
+          type: object
+      jobs:
+        type: array
+        items:
+          type: object
+    description: |
+      Complete concourse pipeline definition for the app
+
   app-response:
     type: object
     properties:

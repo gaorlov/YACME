@@ -6,10 +6,10 @@ class App < ApplicationRecord
   validates :repo, presence: true
 
   def pipeline
-    @pipeline ||= Pipeline.find_or_build( id )
+    @pipeline ||= Pipeline.find_or_build( self )
   end
 
   def rebuild_pipeline!
-    @pipeline ||= Pipeline.build_from( id )
+    @pipeline ||= Pipeline.build_from( self )
   end
 end

@@ -95,7 +95,7 @@ From there the [CI](#dependencies) handles all the heavy lifting of running the 
 
 ### Dependencies
 
-YACME only has one hard dependency at the moment: Concourse. It is the CI pipeline interface to which all component services have to adhere. This may change in the future to be more generic to support others.
+YACME only has one hard dependency at the moment: [Concourse](https://concourse-ci.org/). It is the CI pipeline interface to which all component services have to adhere. This may change in the future to be more generic to support others.
 
 ### Roadmap
 

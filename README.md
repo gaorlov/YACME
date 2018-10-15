@@ -8,11 +8,13 @@ Configuration management is a painful process: there's pipeline configs, orchest
 
 ## What
 
-This is a system that will allow for team[s] responsible for maintaining the pipelines and their pieces to do so without having to bother downstream service developers to force them to have to update configs. 
+This is a system that will allow for team[s] responsible for maintaining the pipelines and their pieces to do so without having to bother downstream service developers to force them to have to update configs.
 
 ## How
 
-Okay. That's great. Let's talk about the how. 
+The TL;DR is that YACME will glue together a [CI](#dependencies) pipeline from user-selected compoents and push it out to the [CI](#dependencies) server to do all all the hard work. 
+
+The long version is as follows:
 
 ### Definitions
 
@@ -21,12 +23,12 @@ Because this introduces several oddly shaped concepts, let's define them:
 * *App*: Code around which the pipeline revolves. Usually would be a web server application.
 * *Component Type*: the template for pipeline interactions that will center around the `App`. This can be of 2 types:
   * `object` - object components are centered around a resource definition that needs to be managed (e.g. a database) and should include `create`, `check`, `update`, and `delete` actions.
-  * `action` - an action component is just that: a CI action that gets executed (e.g. run tests) and has a single action, `execute`
+  * `action` - an action component is just that: a [CI](#dependencies) action that gets executed (e.g. run tests) and has a single action, `execute`
 * *Component*: App-specific component definition. This is the join of `App` and `Component Type` that holds app-specific parameters for that component (e.g. `MyApp`'s `posgres` instance).
 
 ### System Design
 
-Let's start with the overall design. The system consists of 3 pieces: the main platform, the component services, and the CI server (not pictured).
+Let's start with the overall design. The system consists of 3 pieces: the main platform, the component services, and the [CI](#dependencies) server (not pictured).
 
 ![System Design](./YACME.png "System Design")
 
@@ -38,15 +40,15 @@ The platform api is the layer that keeps track of:
 * *component types*: It registers component types and allows them to be added to individual apps
 * *components*: It keeps track of what components were added to what app, whith their parameters and dependencies. 
 
-Along with holding the data, the platform is responsible for generating the CI pipeline from the `component` definitions and the `component type` CI templates. Once it generates the pipeline it will push it to the CI platform
+Along with holding the data, the platform is responsible for generating the [CI](#dependencies) pipeline from the `component` definitions and the `component type` [CI](#dependencies) templates. Once it generates the pipeline it will push it to the [CI](#dependencies) platform
 
 **API Definition**: [Swagger docs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/v1/api.yml)
 
 #### Component Services
 
-These are the services that are responsible for component action definitions. Because the platform assumes that the underlying CI platform is responsible for the full deploy/update/teardown of an application stack, the component services return the action definitions to manage their respective resources. 
+These are the services that are responsible for component action definitions. Because the platform assumes that the underlying [CI](#dependencies) platform is responsible for the full deploy/update/teardown of an application stack, the component services return the action definitions to manage their respective resources. 
 
-This is weird to conceptualize in the abstract, so if we were to use `postgres` as an example, the `postgres-component` service would return 4 CI actions which would allow the CI to:
+This is weird to conceptualize in the abstract, so if we were to use `postgres` as an example, the `postgres-component` service would return 4 [CI](#dependencies) actions which would allow the [CI](#dependencies) to:
 * `create` a new `postgres` instance for an `app` based on input params
 * `check` on its status
 * `update` it, should such a need arise
@@ -86,10 +88,10 @@ Once the app repo is registered and the component pipeline is set up, the system
 
 * Reaches out to all the component services with the app component params to get the most up to date action templates
 * recompiles the pipeline
-* pushes the pipeline out to the CI server
-* triggers the CI build
+* pushes the pipeline out to the [CI](#dependencies) server
+* triggers the [CI](#dependencies) build
 
-From there the CI handles all the heavy lifting of running the actual steps as they are defined by the components.
+From there the [CI](#dependencies) handles all the heavy lifting of running the actual steps as they are defined by the components.
 
 ### Dependencies
 

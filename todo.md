@@ -6,10 +6,11 @@
 
 ## API
 - [x] app controllers & models
+- [x] build pipeline stub
+- [x] render pipeline stub in app payload
+- [x] cache pipeline when not rebuilding
+  - [x] add memcache
 - [ ] fill out pipeline stub
-- [ ] render pipeline
-- [ ] cache pipeline whennot rebuilding
-  - [ ] add memcache
 - [ ] conponent type controllers & models
 - [ ] compoennt controllers & models
 - [ ] generating additions to pipelne

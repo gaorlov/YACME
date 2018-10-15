@@ -9,6 +9,7 @@ gem 'puma', '~> 3.7'
 gem 'jsonapi-utils', git: 'https://github.com/gaorlov/jsonapi-utils', branch: 'non_ar_paginator_support', ref: '48977c279d9ba1d1877b3811269754f5cbb5ed72'
 # env var helpers
 gem 'dotenv-rails'
+gem 'dalli'
 
 gem 'concourserb', '0.0.16'
 

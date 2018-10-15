@@ -1,0 +1,6 @@
+development:
+  - http://memcached:11211
+test:
+  - http://memcached:11211
+production:
+  - http://memcached:11211

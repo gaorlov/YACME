@@ -8,28 +8,20 @@ resources:
       uri: 
       branch: 
       private_key: 
-
-  - name: yacme
-    type: yacme
-
   # ----- DO NOT REMOVE ----- #
 
 groups:
   # ----- DO NOT REMOVE ----- #
   - name: Master
     jobs:
-      - Update Pipeline
+      - Get Source
   # ----- DO NOT REMOVE ----- #
-
 
 jobs:
   # ----- DO NOT REMOVE ----- #
-  - name: Update Pipeline
+  - name: Get Source
     build_logs_to_retain: 100
     plan:
       - get: source
         trigger: true
-      - put: yacme
-        params:
-          app_name:
   # ----- DO NOT REMOVE ----- #

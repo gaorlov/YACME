@@ -508,6 +508,13 @@ parameters:
             PG_HOST: postgres.internal.example.com
             PG_PORT: 5432
           description: Param set for app-specific component definition
+        environment:
+          type: string
+          required: true
+          description: Target environment against which the conponent's execution will be defined
+        group:
+          type: string
+          description: aka pipeline. Components can be grouped arbitrarily
         dependencies:
           type: array
           items:

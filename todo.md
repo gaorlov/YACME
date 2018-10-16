@@ -6,28 +6,38 @@
 
 ## API
 - [x] app controllers & models
+  - [x] models
+  - [x] controllers
 - [x] build pipeline stub
 - [x] render pipeline stub in app payload
 - [x] cache pipeline when not rebuilding
   - [x] add memcache
+- [ ] environment controllers & models
+  - [x] models
+  - [ ] controllers
+- [ ] group controllers and models
+  - [x] models
+  - [ ] controllers
 - [ ] fill out pipeline stub
+  - [ ] groups
+  - [ ] components
+  - [ ] dependencies
 - [ ] conponent type controllers & models
-- [ ] compoennt controllers & models
+- [ ] component controllers & models
 - [ ] generating additions to pipelne
 
 
 ## Concourse Resource
 - [ ] accept params
-- [ ] call yacme to trigger build
-  - [ ] figure out how to get VPN creds in there
 
 ## UI
 - [ ] apps
+- [ ] environments
+- [ ] app environments
+- [ ] compoenent types
 - [ ] app components
 - [ ] app component ordering
 - [ ] app steps
-- [ ] compoenent types
-- [ ] environments
 
 ## Compoenent Services
 ### Tests service

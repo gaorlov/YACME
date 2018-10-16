@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181009042231) do
+ActiveRecord::Schema.define(version: 20181015230245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 20181009042231) do
     t.index ["parent_id"], name: "index_app_component_dependencies_on_parent_id"
   end
 
+  create_table "app_component_groups", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "app_component_group_id"
+    t.index ["app_component_group_id"], name: "index_app_component_groups_on_app_component_group_id"
+    t.index ["group_id"], name: "index_app_component_groups_on_group_id"
+  end
+
   create_table "app_component_params", force: :cascade do |t|
     t.bigint "app_component_id"
     t.bigint "component_param_id"
@@ -38,10 +45,30 @@ ActiveRecord::Schema.define(version: 20181009042231) do
   create_table "app_components", force: :cascade do |t|
     t.bigint "app_id"
     t.bigint "component_id"
+    t.bigint "environment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["app_id"], name: "index_app_components_on_app_id"
     t.index ["component_id"], name: "index_app_components_on_component_id"
+    t.index ["environment_id"], name: "index_app_components_on_environment_id"
+  end
+
+  create_table "app_environments", force: :cascade do |t|
+    t.bigint "app_id"
+    t.bigint "environment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_id"], name: "index_app_environments_on_app_id"
+    t.index ["environment_id"], name: "index_app_environments_on_environment_id"
+  end
+
+  create_table "app_groups", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.bigint "app_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_id"], name: "index_app_groups_on_app_id"
   end
 
   create_table "apps", force: :cascade do |t|
@@ -83,6 +110,13 @@ ActiveRecord::Schema.define(version: 20181009042231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["type_id"], name: "index_components_on_type_id"
+  end
+
+  create_table "environments", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

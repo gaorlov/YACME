@@ -3,6 +3,7 @@ class CreateAppComponents < ActiveRecord::Migration[5.1]
     create_table :app_components do |t|
       t.references :app
       t.references :component
+      t.references :environment
 
       t.timestamps
     end

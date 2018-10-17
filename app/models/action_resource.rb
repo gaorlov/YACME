@@ -1,0 +1,2 @@
+class ActionResource < ApplicationRecord
+end

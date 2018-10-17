@@ -29,14 +29,8 @@ class App < ApplicationRecord
     group = AppGroup.where( name: "Master", app_id: id ).first
     params = { URI: repo,
                BRANCH: :master }
-    add_component( SourceComponentType, params, "", group, [] )
-  end
-
-  def add_component( component_type, params, environment, group, dependencies )
-    app_components.create( component_type: component_type,
-                           params: params,
-                           environment: environment,
-                           group: group,
-                           dependencies: dependencies )
+    app_components << AppComponent.create_from_component( component: SourceComponent.find,
+                                                          params: params,
+                                                          group: group )
   end
 end

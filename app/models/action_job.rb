@@ -1,0 +1,2 @@
+class ActionJob < ApplicationRecord
+end

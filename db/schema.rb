@@ -121,10 +121,10 @@ ActiveRecord::Schema.define(version: 20181016221611) do
   end
 
   create_table "components", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "url"
-    t.string "url_slug"
     t.string "description"
+    t.string "removable", default: "t"
     t.bigint "component_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -147,9 +147,7 @@ ActiveRecord::Schema.define(version: 20181016221611) do
   add_foreign_key "app_component_groups", "app_groups"
   add_foreign_key "app_component_params", "app_components"
   add_foreign_key "app_component_params", "component_params"
-  add_foreign_key "app_components", "apps"
   add_foreign_key "app_components", "components"
-  add_foreign_key "app_components", "environments"
   add_foreign_key "app_environments", "apps"
   add_foreign_key "app_environments", "environments"
   add_foreign_key "app_groups", "apps"

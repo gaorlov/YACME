@@ -1,7 +1,10 @@
 class AppComponent < ApplicationRecord
-  belongs_to :app
+  belongs_to :app, optional: true
   belongs_to :component
-  belongs_to :environment
+
+  delegate :name, :description, to: :component
+
+  belongs_to :environment, optional: true
 
   has_many :app_component_groups, dependent: :destroy
   has_many :groups, through: :app_component_groups, class_name: "AppGroup"
@@ -9,7 +12,7 @@ class AppComponent < ApplicationRecord
   has_many :app_component_params, dependent: :destroy
   has_many :component_params, through: :app_component_params
 
-  has_many :app_component_actions
+  has_many :actions, class_name: "AppComponentAction"
 
   def resources
     pipeline_action.resources
@@ -24,6 +27,23 @@ class AppComponent < ApplicationRecord
   end
 
   def pipeline_action
-    app_component_actions.joins( :action ).where( actions: { pipelineable: true } ).first
+    actions.joins( :action ).where( actions: { pipelinable: true } ).first
+  end
+
+  class << self
+
+    def create_from_component( component: nil,
+                               params: {},
+                               environment: nil,
+                               group: nil,
+                               dependencies: [] )
+
+      create!( component: component ).tap do | app_component |
+        actions = component.actions_for( params, environment )
+        actions.each do |action_json|
+          app_component.actions << AppComponentAction.create_from_json( action_json )
+        end
+      end
+    end
   end
 end

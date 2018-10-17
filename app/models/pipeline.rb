@@ -14,17 +14,10 @@ class Pipeline
       end
     end
 
-    def stub
-      @stub ||= YAML::load_file( File.join( __dir__, '../../config/templates/pipeline-stub.yml' ) )
-    end
   end
 
   def initialize( app: nil )
-    @app            = app
-    @groups         = stub[ :groups ] || []
-    @resources      = stub[ :resources ] || []
-    @resource_types = stub[ :resource_types ] || []
-    @jobs           = stub[ :jobs ] || []
+    @app = app
   end
 
   def as_json
@@ -35,24 +28,28 @@ class Pipeline
   end
 
   def groups
-    @groups + app.groups.map( &:as_json )
+    app.groups.map( &:as_json )
   end
 
   def resources
-    @resources + app_components.map( &:resources ).flatten
+    component_section(:resources)
   end
 
   def resource_types
-    @resource_types + app_components.map( &:resource_types ).flatten
+    component_section(:resource_types)
   end
 
   def jobs
-    @jobs + app_components.map( &:jobs ).flatten
+    component_section(:jobs)
   end
 
   private
 
-  def stub
-    @stub ||= self.class.stub.deep_dup.with_indifferent_access
+  def component_section( section )
+    thing = app_components.map( &section ).flatten.map( &:definition )
+    puts thing.inspect, thing.class
+    thing.map do | definition_json |
+      JSON.parse definition_json
+    end
   end
 end

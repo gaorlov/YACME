@@ -42,6 +42,7 @@ module Api
 
         jsonapi_render json:app, status: :created
       end
+
       private
 
       def app

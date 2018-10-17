@@ -500,6 +500,9 @@ parameters:
       required:
         - params
       properties:
+        component-type-id:
+          type: integer
+          description: The stype of component you want to create
         params:
           type: object
           example:
@@ -510,7 +513,6 @@ parameters:
           description: Param set for app-specific component definition
         environment:
           type: string
-          required: true
           description: Target environment against which the conponent's execution will be defined
         group:
           type: string

@@ -1,5 +1,7 @@
 resource_types:
 
+groups:
+
 resources:
   # ----- DO NOT REMOVE ----- #
   - name: source
@@ -7,14 +9,7 @@ resources:
     source:
       uri: 
       branch: 
-      private_key: 
-  # ----- DO NOT REMOVE ----- #
-
-groups:
-  # ----- DO NOT REMOVE ----- #
-  - name: Master
-    jobs:
-      - Get Source
+      private_key:
   # ----- DO NOT REMOVE ----- #
 
 jobs:

@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+Action.create( name: "create",  pipelinable: true,  description: "Create object" )
+Action.create( name: "check",   pipelinable: false, description: "Check on status of object" )
+Action.create( name: "update",  pipelinable: false, description: "Update object properties" )
+Action.create( name: "delete",  pipelinable: false, description: "Destroy object" )
+Action.create( name: "execute", pipelinable: true,  description: "Execute action" )

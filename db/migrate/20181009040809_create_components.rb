@@ -6,7 +6,7 @@ class CreateComponents < ActiveRecord::Migration[5.1]
       t.string :url_slug
       t.string :description
       
-      t.references :type
+      t.references :component_type, foreign_key: true
       t.timestamps
     end
   end

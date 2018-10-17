@@ -10,14 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181015230245) do
+ActiveRecord::Schema.define(version: 20181016221611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "action_jobs", force: :cascade do |t|
+    t.string "definition"
+    t.bigint "app_component_action_id"
+    t.index ["app_component_action_id"], name: "index_action_jobs_on_app_component_action_id"
+  end
+
+  create_table "action_resource_types", force: :cascade do |t|
+    t.string "definition"
+    t.bigint "app_component_action_id"
+    t.index ["app_component_action_id"], name: "index_action_resource_types_on_app_component_action_id"
+  end
+
+  create_table "action_resources", force: :cascade do |t|
+    t.string "definition"
+    t.bigint "app_component_action_id"
+    t.index ["app_component_action_id"], name: "index_action_resources_on_app_component_action_id"
+  end
+
   create_table "actions", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.boolean "pipelinable"
+  end
+
+  create_table "app_component_actions", force: :cascade do |t|
+    t.bigint "app_component_id"
+    t.bigint "action_id"
+    t.index ["action_id"], name: "index_app_component_actions_on_action_id"
+    t.index ["app_component_id"], name: "index_app_component_actions_on_app_component_id"
   end
 
   create_table "app_component_dependencies", force: :cascade do |t|
@@ -28,10 +54,10 @@ ActiveRecord::Schema.define(version: 20181015230245) do
   end
 
   create_table "app_component_groups", force: :cascade do |t|
-    t.bigint "group_id"
-    t.bigint "app_component_group_id"
-    t.index ["app_component_group_id"], name: "index_app_component_groups_on_app_component_group_id"
-    t.index ["group_id"], name: "index_app_component_groups_on_group_id"
+    t.bigint "app_group_id"
+    t.bigint "app_component_id"
+    t.index ["app_component_id"], name: "index_app_component_groups_on_app_component_id"
+    t.index ["app_group_id"], name: "index_app_component_groups_on_app_group_id"
   end
 
   create_table "app_component_params", force: :cascade do |t|
@@ -79,13 +105,6 @@ ActiveRecord::Schema.define(version: 20181015230245) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "component_actions", force: :cascade do |t|
-    t.bigint "component_id"
-    t.bigint "action_id"
-    t.index ["action_id"], name: "index_component_actions_on_action_id"
-    t.index ["component_id"], name: "index_component_actions_on_component_id"
-  end
-
   create_table "component_params", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -106,10 +125,10 @@ ActiveRecord::Schema.define(version: 20181015230245) do
     t.string "url"
     t.string "url_slug"
     t.string "description"
-    t.bigint "type_id"
+    t.bigint "component_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["type_id"], name: "index_components_on_type_id"
+    t.index ["component_type_id"], name: "index_components_on_component_type_id"
   end
 
   create_table "environments", force: :cascade do |t|
@@ -119,4 +138,21 @@ ActiveRecord::Schema.define(version: 20181015230245) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "action_jobs", "app_component_actions"
+  add_foreign_key "action_resource_types", "app_component_actions"
+  add_foreign_key "action_resources", "app_component_actions"
+  add_foreign_key "app_component_actions", "actions"
+  add_foreign_key "app_component_actions", "app_components"
+  add_foreign_key "app_component_groups", "app_components"
+  add_foreign_key "app_component_groups", "app_groups"
+  add_foreign_key "app_component_params", "app_components"
+  add_foreign_key "app_component_params", "component_params"
+  add_foreign_key "app_components", "apps"
+  add_foreign_key "app_components", "components"
+  add_foreign_key "app_components", "environments"
+  add_foreign_key "app_environments", "apps"
+  add_foreign_key "app_environments", "environments"
+  add_foreign_key "app_groups", "apps"
+  add_foreign_key "component_params", "components"
+  add_foreign_key "components", "component_types"
 end

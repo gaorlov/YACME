@@ -1,6 +1,8 @@
 class Pipeline
   attr_reader :app
 
+  delegate :app_components, to: :app
+
   class << self
     def build_from( app )
       new( app: app ).as_json
@@ -19,10 +21,10 @@ class Pipeline
 
   def initialize( app: nil )
     @app            = app
-    @groups         = stub[ :groups ]
-    @resources      = stub[ :resources ]
-    @resource_types = stub[ :resource_types ]
-    @jobs           = stub[ :jobs ]
+    @groups         = stub[ :groups ] || []
+    @resources      = stub[ :resources ] || []
+    @resource_types = stub[ :resource_types ] || []
+    @jobs           = stub[ :jobs ] || []
   end
 
   def as_json
@@ -33,19 +35,19 @@ class Pipeline
   end
 
   def groups
-    @groups # + app.components.map( &:groups )
+    @groups + app.groups.map( &:as_json )
   end
 
   def resources
-    @resources # + app.components.map( &:resources )
+    @resources + app_components.map( &:resources ).flatten
   end
 
   def resource_types
-    @resource_types # + app.components.map( &:resource_types )
+    @resource_types + app_components.map( &:resource_types ).flatten
   end
 
   def jobs
-    @jobs + app.components.map( &:jobs )
+    @jobs + app_components.map( &:jobs ).flatten
   end
 
   private

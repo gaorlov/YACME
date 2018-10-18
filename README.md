@@ -77,7 +77,7 @@ The system view of the system consists of two main pieces: adding component type
 Adding a component type is pretty straightforward:
 
 * The component service is spun up on a network visible to the platform
-* The service follows the [contract](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/component-interface.yml)
+* The service follows the [contract](https://editor.swagger.io/?url=https://raw.githubusercontent.com/gaorlov/YACME/master/contract/v1/component-interface.yml)
 * The component is registered with the platform through its component type API
 
 Ta-da! It is now available for everyone to use and add to their apps.

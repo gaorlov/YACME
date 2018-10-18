@@ -18,15 +18,10 @@ class App < ApplicationRecord
     @pipeline ||= Pipeline.build_from( self )
   end
 
-  after_commit :create_default_group, on: :create
-  after_commit :create_source_component, on: :create
+  after_commit :create_defaults, on: :create
 
-  def create_default_group
-    groups.create( name: "Master" )
-  end
-
-  def create_source_component
-    group = AppGroup.where( name: "Master", app_id: id ).first
+  def create_defaults
+    group = groups.create!( name: "Master" )
     params = { URI: repo,
                BRANCH: :master }
     app_components << AppComponent.create_from_component( component: SourceComponent.find,

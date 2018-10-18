@@ -46,9 +46,7 @@ class Pipeline
   private
 
   def component_section( section )
-    thing = app_components.map( &section ).flatten.map( &:definition )
-    puts thing.inspect, thing.class
-    thing.map do | definition_json |
+    app_components.map( &section ).flatten.map( &:definition ).map do | definition_json |
       JSON.parse definition_json
     end
   end

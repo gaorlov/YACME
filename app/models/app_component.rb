@@ -43,6 +43,7 @@ class AppComponent < ApplicationRecord
         actions.each do |action_json|
           app_component.actions << AppComponentAction.create_from_json( action_json )
         end
+        group.app_components << app_component
       end
     end
   end

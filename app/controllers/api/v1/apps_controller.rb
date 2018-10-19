@@ -35,12 +35,15 @@ module Api
 
       def delete
         jsonapi_render json: app.destroy
+      rescue ActiveRecord::RecordInvalid => e
+        puts "nope lol"
+        jsonapi_render_errors json: app, status: :unprocessable_entity
       end
 
       def rebuild
         app.rebuild_pipeline!
 
-        jsonapi_render json:app, status: :created
+        jsonapi_render json: app, status: :created
       end
 
       private

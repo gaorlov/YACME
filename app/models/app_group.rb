@@ -7,7 +7,11 @@ class AppGroup < ApplicationRecord
   def as_json
     { 
       name: name,
-      jobs: app_components.map( &:name )
+      jobs: jobs.map( &:name )
     }
+  end
+
+  def jobs
+    app_components.map( &:jobs ).flatten
   end
 end

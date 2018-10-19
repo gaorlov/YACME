@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20181016221611) do
     t.string "name", null: false
     t.string "repo", null: false
     t.string "description"
+    t.boolean "removable", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

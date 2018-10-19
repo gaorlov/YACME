@@ -12,7 +12,7 @@ class AppComponent < ApplicationRecord
   has_many :app_component_params, dependent: :destroy
   has_many :component_params, through: :app_component_params
 
-  has_many :actions, class_name: "AppComponentAction"
+  has_many :actions, class_name: "AppComponentAction", dependent: :destroy
 
   def resources
     pipeline_action.resources

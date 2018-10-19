@@ -4,6 +4,7 @@ class CreateApps < ActiveRecord::Migration[5.1]
       t.string :name,   null: false
       t.string :repo,   null: false
       t.string :description
+      t.boolean :removable, default: true
 
       t.timestamps
     end

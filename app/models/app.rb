@@ -19,6 +19,7 @@ class App < ApplicationRecord
   end
 
   after_commit :create_defaults, on: :create
+  before_destroy :check_removable
 
   def create_defaults
     group = groups.create!( name: "Master" )
@@ -27,5 +28,12 @@ class App < ApplicationRecord
     app_components << AppComponent.create_from_component( component: SourceComponent.find,
                                                           params: params,
                                                           group: group )
+  end
+
+  def check_removable
+    return if removable
+
+    errors.add(:removable, "This application is not removable")
+    raise ActiveRecord::RecordInvalid.new(self)
   end
 end

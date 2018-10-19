@@ -8,22 +8,28 @@
 - [x] app controllers & models
   - [x] models
   - [x] controllers
-- [x] build pipeline stub
-- [x] render pipeline stub in app payload
+- [x] build pipeline
+  - [ ] groups
+  - [ ] resources
+  - [ ] resource_types
+  - [ ] jobs
+  - [ ] dependencies
+- [ ] component types
+  - [x] models
+  - [ ] controllers
+  - [ ] client
 - [x] cache pipeline when not rebuilding
   - [x] add memcache
-- [ ] environment controllers & models
+- [ ] environments
   - [x] models
   - [ ] controllers
-- [ ] group controllers and models
+- [ ] group
   - [x] models
   - [ ] controllers
-- [ ] fill out pipeline stub
-  - [ ] groups
-  - [ ] components
-  - [ ] dependencies
-- [ ] conponent type controllers & models
-- [ ] component controllers & models
+- [ ] components
+  - [ ] models
+  - [ ] response parsing into objects
+  - [ ] controllers
 - [ ] generating additions to pipelne
 
 
